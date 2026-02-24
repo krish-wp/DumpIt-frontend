@@ -7,9 +7,6 @@ import {
   useState,
 } from 'react';
 
-import dotenv from 'dotenv';
-dotenv.config();
-
 const DEFAULT_API_BASE =
   import.meta.env.VITE_API_BASE || 'http://localhost:8000/api/v1';
 
