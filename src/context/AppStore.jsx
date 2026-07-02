@@ -55,12 +55,27 @@ export function AppProvider({ children }) {
       setError('');
       const startTime = performance.now();
 
-      const res = await fetch(url, {
-        method,
-        headers: body ? { 'Content-Type': 'application/json' } : undefined,
-        credentials: 'include',
-        body: body ? JSON.stringify(body) : undefined,
-      });
+      let res;
+      try {
+        res = await fetch(url, {
+          method,
+          headers: body ? { 'Content-Type': 'application/json' } : undefined,
+          credentials: 'include',
+          body: body ? JSON.stringify(body) : undefined,
+        });
+      } catch (err) {
+        const durationMs = Math.round(performance.now() - startTime);
+        setDebug({
+          request: { url, method, body },
+          response: null,
+          status: 0,
+          ok: false,
+          durationMs,
+        });
+        throw new Error(
+          'Cannot reach the server. Check if the backend is running.',
+        );
+      }
 
       const durationMs = Math.round(performance.now() - startTime);
       const text = await res.text();
