@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { useAppStore } from '../context/AppStore.jsx';
 
 function AppLayout() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const {
     sessionReady,
     sessionStatus,
@@ -12,9 +14,23 @@ function AppLayout() {
     setError,
   } = useAppStore();
 
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
   return (
     <div className="app-shell">
-      <aside className="side-nav">
+      <button
+        className="hamburger"
+        onClick={toggleSidebar}
+        aria-label="Toggle menu"
+      >
+        {sidebarOpen ? '✕' : '☰'}
+      </button>
+
+      {sidebarOpen && (
+        <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />
+      )}
+
+      <aside className={`side-nav ${sidebarOpen ? 'open' : ''}`}>
         <div className="brand">
           <span className="brand-mark">DI</span>
           <div>
@@ -24,19 +40,31 @@ function AppLayout() {
         </div>
 
         <nav className="nav-rail">
-          <NavLink to="/" end>
+          <NavLink to="/" end onClick={() => setSidebarOpen(false)}>
             Overview
           </NavLink>
-          <NavLink to="/feed">Feed</NavLink>
-          <NavLink to="/session">Session</NavLink>
-          <NavLink to="/dumps">Dumps</NavLink>
-          <NavLink to="/settings">Settings</NavLink>
+          <NavLink to="/feed" onClick={() => setSidebarOpen(false)}>
+            Feed
+          </NavLink>
+          <NavLink to="/session" onClick={() => setSidebarOpen(false)}>
+            Session
+          </NavLink>
+          <NavLink to="/dumps" onClick={() => setSidebarOpen(false)}>
+            Dumps
+          </NavLink>
+          <NavLink to="/settings" onClick={() => setSidebarOpen(false)}>
+            Settings
+          </NavLink>
         </nav>
 
+        <div className="side-spacer" />
+
         <div className="side-panel">
-          <p className="eyebrow">Session</p>
-          <div className={`status ${sessionReady ? 'ok' : 'idle'}`}>
-            {sessionReady ? 'Active' : 'Idle'}
+          <div className="side-panel-header">
+            <p className="eyebrow">Session</p>
+            <div className={`status ${sessionReady ? 'ok' : 'idle'}`}>
+              {sessionReady ? 'Active' : 'Idle'}
+            </div>
           </div>
           <p className="muted">{sessionStatus}</p>
           <div className="button-col">

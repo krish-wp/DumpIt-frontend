@@ -21,7 +21,7 @@ function SettingsPage() {
         </p>
       </div>
 
-      <div className="panel log">
+      <div className="panel">
         <p className="eyebrow">Debug</p>
         <h2>Last API response</h2>
         <pre>{JSON.stringify(debug, null, 2)}</pre>

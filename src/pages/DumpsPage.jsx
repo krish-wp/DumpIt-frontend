@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { dumpStatuses, useAppStore } from '../context/AppStore.jsx';
 
@@ -15,6 +15,10 @@ function DumpsPage() {
     setSelectedDumpId,
   } = useAppStore();
   const [section, setSection] = useState('my');
+
+  useEffect(() => {
+    loadDumps();
+  }, []);
 
   const handleSectionChange = (nextSection) => {
     setSection(nextSection);

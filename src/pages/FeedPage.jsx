@@ -19,7 +19,7 @@ function FeedPage() {
 
   useEffect(() => {
     loadPublicDumps();
-  }, [filters.topic, loadPublicDumps]);
+  }, [filters.topic]);
 
   const toggleComments = async (dumpId) => {
     setExpanded((prev) => ({ ...prev, [dumpId]: !prev[dumpId] }));
